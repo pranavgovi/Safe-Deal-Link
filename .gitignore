@@ -1,0 +1,25 @@
+# Python
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.venv/
+backend/venv/
+*.pyc
+
+# Env
+.env
+.env.local
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# Uploaded photos (local storage)
+backend/uploads/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Docker volumes
+postgres-data/
