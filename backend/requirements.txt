@@ -8,3 +8,4 @@ langgraph
 apscheduler
 python-dotenv
 python-multipart
+anthropic

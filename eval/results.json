@@ -1,0 +1,151 @@
+{
+  "correct": 18,
+  "total": 18,
+  "accuracy": 1.0,
+  "results": [
+    {
+      "id": "honest-1",
+      "category": "honest",
+      "expected": "capture",
+      "actual": "capture",
+      "correct": true,
+      "reason": null
+    },
+    {
+      "id": "honest-2",
+      "category": "honest",
+      "expected": "capture",
+      "actual": "capture",
+      "correct": true,
+      "reason": null
+    },
+    {
+      "id": "honest-3",
+      "category": "honest",
+      "expected": "capture",
+      "actual": "capture",
+      "correct": true,
+      "reason": null
+    },
+    {
+      "id": "scam-listing-1",
+      "category": "scam_listing",
+      "expected": "capture",
+      "actual": "capture",
+      "correct": true,
+      "reason": null
+    },
+    {
+      "id": "wrong-item-1",
+      "category": "wrong_item",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier did not find a match"
+    },
+    {
+      "id": "wrong-item-2",
+      "category": "wrong_item",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier did not find a match"
+    },
+    {
+      "id": "damaged-1",
+      "category": "damaged",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier did not find a match"
+    },
+    {
+      "id": "damaged-2",
+      "category": "damaged",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier confidence 0.5 below threshold 0.85"
+    },
+    {
+      "id": "unclear-photo-1",
+      "category": "unclear_photo",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier confidence 0.4 below threshold 0.85"
+    },
+    {
+      "id": "unclear-photo-2",
+      "category": "unclear_photo",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier did not find a match"
+    },
+    {
+      "id": "partial-delivery-1",
+      "category": "partial_delivery",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier did not find a match"
+    },
+    {
+      "id": "amount-exceeds-authorized-1",
+      "category": "guardrail_amount",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "requested amount 150.0 exceeds authorized amount 100.0"
+    },
+    {
+      "id": "already-captured-1",
+      "category": "guardrail_idempotency",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "deal has already been captured"
+    },
+    {
+      "id": "expired-authorization-1",
+      "category": "guardrail_expiry",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "authorization has expired"
+    },
+    {
+      "id": "wrong-state-1",
+      "category": "guardrail_state",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "deal is in DELIVERED, not VERIFYING"
+    },
+    {
+      "id": "wrong-state-2",
+      "category": "guardrail_state",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "deal is in VOIDED, not VERIFYING"
+    },
+    {
+      "id": "no-match-flag-false-confidence-high-1",
+      "category": "wrong_item",
+      "expected": "escalate",
+      "actual": "escalate",
+      "correct": true,
+      "reason": "verifier did not find a match"
+    },
+    {
+      "id": "honest-4",
+      "category": "honest",
+      "expected": "capture",
+      "actual": "capture",
+      "correct": true,
+      "reason": null
+    }
+  ]
+}

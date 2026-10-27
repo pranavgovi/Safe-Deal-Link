@@ -1,0 +1,164 @@
+[
+  {
+    "id": "honest-1",
+    "category": "honest",
+    "note": "Clean match, high confidence — should capture.",
+    "deal": { "status": "VERIFYING", "price": 450.0, "auth_expires_at_days_from_now": 20, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.97, "reasoning": "Photo clearly matches listing." },
+    "requested_amount": 450.0,
+    "expected": "capture"
+  },
+  {
+    "id": "honest-2",
+    "category": "honest",
+    "note": "Exact confidence at the 0.85 threshold — boundary should still capture.",
+    "deal": { "status": "VERIFYING", "price": 120.0, "auth_expires_at_days_from_now": 10, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.85, "reasoning": "Matches, minor lighting difference." },
+    "requested_amount": 120.0,
+    "expected": "capture"
+  },
+  {
+    "id": "honest-3",
+    "category": "honest",
+    "note": "Cheap item, very confident match.",
+    "deal": { "status": "VERIFYING", "price": 25.0, "auth_expires_at_days_from_now": 5, "captured": false },
+    "verifier_result": { "match": true, "confidence": 1.0, "reasoning": "Identical to listing photo." },
+    "requested_amount": 25.0,
+    "expected": "capture"
+  },
+  {
+    "id": "scam-listing-1",
+    "category": "scam_listing",
+    "note": "Listing guard flagged this pre-payment, but buyer still paid and the delivered item genuinely matches — guardrails only look at delivery evidence, so a flagged-but-accurate deal still captures.",
+    "deal": { "status": "VERIFYING", "price": 15.0, "auth_expires_at_days_from_now": 15, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.9, "reasoning": "Item matches despite the listing's suspiciously low price." },
+    "requested_amount": 15.0,
+    "expected": "capture"
+  },
+  {
+    "id": "wrong-item-1",
+    "category": "wrong_item",
+    "note": "Buyer received a completely different item.",
+    "deal": { "status": "VERIFYING", "price": 450.0, "auth_expires_at_days_from_now": 20, "captured": false },
+    "verifier_result": { "match": false, "confidence": 0.95, "reasoning": "Photo shows a different model entirely." },
+    "requested_amount": 450.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "wrong-item-2",
+    "category": "wrong_item",
+    "note": "Wrong color/variant of the right product type.",
+    "deal": { "status": "VERIFYING", "price": 80.0, "auth_expires_at_days_from_now": 12, "captured": false },
+    "verifier_result": { "match": false, "confidence": 0.8, "reasoning": "Listing was for a black bag, photo shows a brown one." },
+    "requested_amount": 80.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "damaged-1",
+    "category": "damaged",
+    "note": "Item is the right one but materially damaged vs. the listed condition.",
+    "deal": { "status": "VERIFYING", "price": 200.0, "auth_expires_at_days_from_now": 18, "captured": false },
+    "verifier_result": { "match": false, "confidence": 0.7, "reasoning": "Same item but listing said 'no scratches'; photo shows a cracked screen." },
+    "requested_amount": 200.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "damaged-2",
+    "category": "damaged",
+    "note": "Verifier is unsure whether cosmetic wear counts as a mismatch — low confidence either way.",
+    "deal": { "status": "VERIFYING", "price": 60.0, "auth_expires_at_days_from_now": 9, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.5, "reasoning": "Looks like the item but condition is ambiguous from the photo." },
+    "requested_amount": 60.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "unclear-photo-1",
+    "category": "unclear_photo",
+    "note": "Blurry/dark photo — verifier can't confidently say either way.",
+    "deal": { "status": "VERIFYING", "price": 35.0, "auth_expires_at_days_from_now": 7, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.4, "reasoning": "Photo too dark to confirm details." },
+    "requested_amount": 35.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "unclear-photo-2",
+    "category": "unclear_photo",
+    "note": "Verifier error path (e.g. broken LLM key or bad upload) always reports match=false, confidence=0.0.",
+    "deal": { "status": "VERIFYING", "price": 100.0, "auth_expires_at_days_from_now": 14, "captured": false },
+    "verifier_result": { "match": false, "confidence": 0.0, "reasoning": "verifier error: no photo on disk" },
+    "requested_amount": 100.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "partial-delivery-1",
+    "category": "partial_delivery",
+    "note": "Only part of a multi-item bundle arrived — treated as a mismatch, routes to human for a partial-capture decision.",
+    "deal": { "status": "VERIFYING", "price": 300.0, "auth_expires_at_days_from_now": 16, "captured": false },
+    "verifier_result": { "match": false, "confidence": 0.6, "reasoning": "Listing was a 3-piece set; photo shows only 1 piece." },
+    "requested_amount": 300.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "amount-exceeds-authorized-1",
+    "category": "guardrail_amount",
+    "note": "Requested capture amount somehow exceeds what was authorized — must never be allowed through, even with a perfect verifier match.",
+    "deal": { "status": "VERIFYING", "price": 100.0, "auth_expires_at_days_from_now": 10, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.99, "reasoning": "Perfect match." },
+    "requested_amount": 150.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "already-captured-1",
+    "category": "guardrail_idempotency",
+    "note": "Deal was already captured (e.g. a webhook retry) — must not capture twice.",
+    "deal": { "status": "VERIFYING", "price": 75.0, "auth_expires_at_days_from_now": 10, "captured": true },
+    "verifier_result": { "match": true, "confidence": 0.95, "reasoning": "Matches." },
+    "requested_amount": 75.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "expired-authorization-1",
+    "category": "guardrail_expiry",
+    "note": "Authorization's 29-day hard cap already passed — escrow should have voided this, but guardrails are the last line of defense.",
+    "deal": { "status": "VERIFYING", "price": 50.0, "auth_expires_at_days_from_now": -1, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.95, "reasoning": "Matches." },
+    "requested_amount": 50.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "wrong-state-1",
+    "category": "guardrail_state",
+    "note": "Deal isn't even in VERIFYING (e.g. a stale/duplicate pipeline run) — must not capture regardless of verifier output.",
+    "deal": { "status": "DELIVERED", "price": 90.0, "auth_expires_at_days_from_now": 10, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.95, "reasoning": "Matches." },
+    "requested_amount": 90.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "wrong-state-2",
+    "category": "guardrail_state",
+    "note": "Deal already voided — a late pipeline run must not resurrect it into a capture.",
+    "deal": { "status": "VOIDED", "price": 40.0, "auth_expires_at_days_from_now": 10, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.95, "reasoning": "Matches." },
+    "requested_amount": 40.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "no-match-flag-false-confidence-high-1",
+    "category": "wrong_item",
+    "note": "Verifier is very confident it's the WRONG item — confidence alone must never override match=false.",
+    "deal": { "status": "VERIFYING", "price": 500.0, "auth_expires_at_days_from_now": 20, "captured": false },
+    "verifier_result": { "match": false, "confidence": 0.99, "reasoning": "Definitely not the listed item." },
+    "requested_amount": 500.0,
+    "expected": "escalate"
+  },
+  {
+    "id": "honest-4",
+    "category": "honest",
+    "note": "High-value item, strong match, authorization close to but not past expiry.",
+    "deal": { "status": "VERIFYING", "price": 1200.0, "auth_expires_at_days_from_now": 1, "captured": false },
+    "verifier_result": { "match": true, "confidence": 0.93, "reasoning": "Matches listing exactly." },
+    "requested_amount": 1200.0,
+    "expected": "capture"
+  }
+]
